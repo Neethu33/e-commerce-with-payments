@@ -1,0 +1,39 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <div class="container">
+    <a class="navbar-brand" routerLink="/">🛒 E-Commerce Demo</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav me-auto">
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/" routerLinkActive="active">Home</a>
+        </li>
+        <li class="nav-item" *ngIf="isAuthenticated$ | async">
+          <a class="nav-link" routerLink="/cart" routerLinkActive="active">
+            Cart <span class="badge bg-primary" *ngIf="(cartItemCount$ | async)! > 0">{{ cartItemCount$ | async }}</span>
+          </a>
+        </li>
+        <li class="nav-item" *ngIf="isAuthenticated$ | async">
+          <a class="nav-link" routerLink="/orders" routerLinkActive="active">My Orders</a>
+        </li>
+        <li class="nav-item" *ngIf="isAdmin$ | async">
+          <a class="nav-link" routerLink="/admin" routerLinkActive="active">Admin Dashboard</a>
+        </li>
+      </ul>
+      <ul class="navbar-nav">
+        <li class="nav-item" *ngIf="!(isAuthenticated$ | async)">
+          <a class="nav-link" routerLink="/login">Login</a>
+        </li>
+        <li class="nav-item dropdown" *ngIf="isAuthenticated$ | async">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown">
+            {{ username$ | async }}
+          </a>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" (click)="logout()">Logout</a></li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>

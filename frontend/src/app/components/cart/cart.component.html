@@ -1,0 +1,68 @@
+<div class="container my-5">
+  <h1 class="mb-4">Shopping Cart</h1>
+
+  <div *ngIf="loading" class="text-center">
+    <div class="spinner-border" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+  </div>
+
+  <div *ngIf="!loading && cartItems.length === 0" class="text-center my-5">
+    <p class="lead text-muted">Your cart is empty</p>
+    <button class="btn btn-primary" routerLink="/">Continue Shopping</button>
+  </div>
+
+  <div *ngIf="!loading && cartItems.length > 0">
+    <div class="row">
+      <div class="col-md-8">
+        <div class="card">
+          <div class="card-body">
+            <div *ngFor="let item of cartItems" class="cart-item">
+              <div class="row align-items-center">
+                <div class="col-md-6">
+                  <h5>{{ item.productName }}</h5>
+                  <p class="text-muted mb-0">Quantity: {{ item.quantity }}</p>
+                </div>
+                <div class="col-md-3 text-end">
+                  <p class="mb-0"><strong>${{ item.price * item.quantity }}</strong></p>
+                  <small class="text-muted">${{ item.price }} each</small>
+                </div>
+                <div class="col-md-3 text-end">
+                  <button class="btn btn-sm btn-danger" (click)="removeItem(item.productId)">
+                    Remove
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">Order Summary</h5>
+            <hr>
+            <div class="d-flex justify-content-between mb-3">
+              <span>Subtotal:</span>
+              <span>${{ getTotal() }}</span>
+            </div>
+            <div class="d-flex justify-content-between mb-3">
+              <span>Tax:</span>
+              <span>$0.00</span>
+            </div>
+            <hr>
+            <div class="d-flex justify-content-between mb-3">
+              <strong>Total:</strong>
+              <strong class="text-primary">${{ getTotal() }}</strong>
+            </div>
+            <div class="d-grid">
+              <button class="btn btn-primary btn-lg" (click)="checkout()">
+                Proceed to Checkout
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

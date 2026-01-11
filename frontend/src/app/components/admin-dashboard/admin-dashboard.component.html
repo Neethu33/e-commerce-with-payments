@@ -1,0 +1,125 @@
+<div class="container my-5">
+  <h1 class="mb-4">Admin Dashboard</h1>
+  <p class="text-muted">Mock admin dashboard with simulated data</p>
+
+  <!-- Statistics Cards -->
+  <div class="row mb-4" *ngIf="!loadingStats">
+    <div class="col-md-3">
+      <div class="card text-center">
+        <div class="card-body">
+          <h5 class="card-title">Total Orders</h5>
+          <h2 class="text-primary">{{ stats.totalOrders || 0 }}</h2>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card text-center">
+        <div class="card-body">
+          <h5 class="card-title">Total Revenue</h5>
+          <h2 class="text-success">${{ stats.totalRevenue || 0 }}</h2>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card text-center">
+        <div class="card-body">
+          <h5 class="card-title">Total Customers</h5>
+          <h2 class="text-info">{{ stats.totalCustomers || 0 }}</h2>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card text-center">
+        <div class="card-body">
+          <h5 class="card-title">Total Products</h5>
+          <h2 class="text-warning">{{ stats.totalProducts || 0 }}</h2>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Products Section -->
+  <div class="card mb-4">
+    <div class="card-header">
+      <h5 class="mb-0">Product Inventory</h5>
+    </div>
+    <div class="card-body">
+      <div *ngIf="loadingProducts" class="text-center">
+        <div class="spinner-border" role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+      </div>
+      <div *ngIf="!loadingProducts">
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Name</th>
+              <th>Price</th>
+              <th>Stock</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let product of products">
+              <td>{{ product.id }}</td>
+              <td>{{ product.name }}</td>
+              <td>${{ product.price }}</td>
+              <td>
+                <span [class]="'badge bg-' + (product.stock > 20 ? 'success' : 'warning')">
+                  {{ product.stock }}
+                </span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Orders Section -->
+  <div class="card">
+    <div class="card-header">
+      <h5 class="mb-0">All Orders</h5>
+    </div>
+    <div class="card-body">
+      <div *ngIf="loadingOrders" class="text-center">
+        <div class="spinner-border" role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+      </div>
+      <div *ngIf="!loadingOrders && orders.length === 0" class="text-center my-3">
+        <p class="text-muted">No orders found</p>
+      </div>
+      <div *ngIf="!loadingOrders && orders.length > 0">
+        <div class="table-responsive">
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>Order ID</th>
+                <th>Customer</th>
+                <th>Items</th>
+                <th>Total</th>
+                <th>Status</th>
+                <th>Date</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let order of orders">
+                <td>{{ order.orderId }}</td>
+                <td>{{ order.username }}</td>
+                <td>{{ order.items.length }} item(s)</td>
+                <td>${{ order.totalAmount }}</td>
+                <td>
+                  <span class="badge bg-{{ getStatusClass(order.status) }}">
+                    {{ order.status }}
+                  </span>
+                </td>
+                <td>{{ order.orderDate | date:'short' }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,76 @@
+<div class="container my-5">
+  <div class="row justify-content-center">
+    <div class="col-md-6 col-lg-4">
+      <div class="card shadow">
+        <div class="card-body">
+          <h2 class="card-title text-center mb-4">Login</h2>
+          
+          <div class="alert alert-info" role="alert">
+            <strong>Demo Credentials:</strong><br>
+            <small>
+              Customer: <code>customer / password</code><br>
+              Admin: <code>admin / admin123</code>
+            </small>
+          </div>
+
+          <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+            <div class="mb-3">
+              <label for="username" class="form-label">Username</label>
+              <input 
+                type="text" 
+                class="form-control" 
+                id="username"
+                formControlName="username"
+                [class.is-invalid]="loginForm.get('username')?.invalid && loginForm.get('username')?.touched">
+              <div class="invalid-feedback" *ngIf="loginForm.get('username')?.invalid && loginForm.get('username')?.touched">
+                Username is required
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label for="password" class="form-label">Password</label>
+              <input 
+                type="password" 
+                class="form-control" 
+                id="password"
+                formControlName="password"
+                [class.is-invalid]="loginForm.get('password')?.invalid && loginForm.get('password')?.touched">
+              <div class="invalid-feedback" *ngIf="loginForm.get('password')?.invalid && loginForm.get('password')?.touched">
+                Password is required
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <button 
+                type="button" 
+                class="btn btn-sm btn-outline-secondary me-2"
+                (click)="fillDemoCredentials('customer')">
+                Fill Customer
+              </button>
+              <button 
+                type="button" 
+                class="btn btn-sm btn-outline-secondary"
+                (click)="fillDemoCredentials('admin')">
+                Fill Admin
+              </button>
+            </div>
+
+            <div class="alert alert-danger" *ngIf="error" role="alert">
+              {{ error }}
+            </div>
+
+            <div class="d-grid">
+              <button 
+                type="submit" 
+                class="btn btn-primary"
+                [disabled]="loginForm.invalid || loading">
+                <span *ngIf="loading" class="spinner-border spinner-border-sm me-2"></span>
+                Login
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

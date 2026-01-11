@@ -1,0 +1,93 @@
+<div class="container my-5">
+  <h1 class="mb-4">Checkout</h1>
+
+  <div *ngIf="!orderId && !processing">
+    <div class="row">
+      <div class="col-md-8">
+        <div class="card mb-4">
+          <div class="card-body">
+            <h5 class="card-title">Order Items</h5>
+            <hr>
+            <div *ngFor="let item of cartItems" class="mb-3">
+              <div class="d-flex justify-content-between">
+                <div>
+                  <strong>{{ item.productName }}</strong>
+                  <p class="text-muted mb-0">Quantity: {{ item.quantity }}</p>
+                </div>
+                <div class="text-end">
+                  <strong>${{ item.price * item.quantity }}</strong>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">Payment Information</h5>
+            <hr>
+            <div class="alert alert-info">
+              <strong>Mock Payment Mode:</strong> This is a demo. No real payment will be processed.
+            </div>
+            <p class="text-muted">Payment method: Credit Card (Mock)</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">Order Summary</h5>
+            <hr>
+            <div class="d-flex justify-content-between mb-3">
+              <span>Subtotal:</span>
+              <span>${{ getTotal() }}</span>
+            </div>
+            <div class="d-flex justify-content-between mb-3">
+              <span>Tax:</span>
+              <span>$0.00</span>
+            </div>
+            <hr>
+            <div class="d-flex justify-content-between mb-4">
+              <strong>Total:</strong>
+              <strong class="text-primary">${{ getTotal() }}</strong>
+            </div>
+            <div class="d-grid">
+              <button 
+                class="btn btn-primary btn-lg" 
+                (click)="processPayment()"
+                [disabled]="processing">
+                Complete Payment
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="processing" class="text-center my-5">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Processing...</span>
+    </div>
+    <p class="mt-3">Processing your payment...</p>
+  </div>
+
+  <div *ngIf="orderId && paymentRef" class="text-center my-5">
+    <div class="alert alert-success" role="alert">
+      <h4 class="alert-heading">Payment Successful!</h4>
+      <p>Your order has been placed successfully.</p>
+      <hr>
+      <p class="mb-0">
+        <strong>Order ID:</strong> {{ orderId }}<br>
+        <strong>Payment Reference:</strong> {{ paymentRef }}
+      </p>
+      <p class="mt-3">Redirecting to order history...</p>
+    </div>
+  </div>
+
+  <div *ngIf="error" class="alert alert-danger" role="alert">
+    {{ error }}
+    <button class="btn btn-sm btn-outline-danger ms-2" (click)="processPayment()">Retry</button>
+  </div>
+</div>

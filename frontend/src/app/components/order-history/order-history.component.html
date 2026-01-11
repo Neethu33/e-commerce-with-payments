@@ -1,0 +1,57 @@
+<div class="container my-5">
+  <h1 class="mb-4">My Orders</h1>
+
+  <div *ngIf="loading" class="text-center">
+    <div class="spinner-border" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+  </div>
+
+  <div *ngIf="error" class="alert alert-danger" role="alert">
+    {{ error }}
+    <button class="btn btn-sm btn-outline-danger ms-2" (click)="loadOrders()">Retry</button>
+  </div>
+
+  <div *ngIf="!loading && !error && orders.length === 0" class="text-center my-5">
+    <p class="lead text-muted">You haven't placed any orders yet.</p>
+    <button class="btn btn-primary" routerLink="/">Start Shopping</button>
+  </div>
+
+  <div *ngIf="!loading && !error && orders.length > 0">
+    <div class="card mb-3" 
+         *ngFor="let order of orders"
+         [class.border-success]="highlightedOrderId === order.orderId"
+         [class.border-3]="highlightedOrderId === order.orderId">
+      <div class="card-header d-flex justify-content-between align-items-center">
+        <div>
+          <strong>Order #{{ order.orderId }}</strong>
+          <span class="badge bg-{{ getStatusClass(order.status) }} ms-2">
+            {{ order.status }}
+          </span>
+        </div>
+        <div class="text-muted">
+          <small>{{ order.orderDate | date:'medium' }}</small>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="row mb-3">
+          <div class="col-md-8">
+            <h6>Items:</h6>
+            <ul class="list-unstyled">
+              <li *ngFor="let item of order.items">
+                {{ item.productName }} - Quantity: {{ item.quantity }} - 
+                ${{ item.price * item.quantity }}
+              </li>
+            </ul>
+          </div>
+          <div class="col-md-4 text-end">
+            <h5 class="text-primary">Total: ${{ order.totalAmount }}</h5>
+          </div>
+        </div>
+        <div *ngIf="highlightedOrderId === order.orderId" class="alert alert-success mb-0">
+          <strong>New Order!</strong> This order was just placed.
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

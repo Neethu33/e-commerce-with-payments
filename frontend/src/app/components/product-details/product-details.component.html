@@ -1,0 +1,42 @@
+<div class="container my-5" *ngIf="product">
+  <div class="row">
+    <div class="col-md-6">
+      <img [src]="product.imageUrl" class="img-fluid rounded" [alt]="product.name">
+    </div>
+    <div class="col-md-6">
+      <h1>{{ product.name }}</h1>
+      <p class="lead text-muted">{{ product.description }}</p>
+      <h2 class="text-primary mb-4">${{ product.price }}</h2>
+      <p class="mb-3">
+        <span class="badge bg-success">In Stock: {{ product.stock }}</span>
+      </p>
+      
+      <div class="mb-4">
+        <label class="form-label">Quantity:</label>
+        <div class="input-group" style="width: 150px;">
+          <button class="btn btn-outline-secondary" (click)="decreaseQuantity()">-</button>
+          <input type="number" class="form-control text-center" [(ngModel)]="quantity" 
+                 [max]="product.stock" min="1" readonly>
+          <button class="btn btn-outline-secondary" (click)="increaseQuantity()">+</button>
+        </div>
+      </div>
+
+      <div class="d-grid gap-2">
+        <button class="btn btn-primary btn-lg" (click)="addToCart()">
+          Add to Cart
+        </button>
+        <button class="btn btn-outline-secondary" (click)="goBack()">
+          Back to Products
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container my-5" *ngIf="loading">
+  <div class="text-center">
+    <div class="spinner-border" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+  </div>
+</div>
