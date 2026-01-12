@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
+import { ToastService } from '../../services/toast.service';
 
 @Component({
   selector: 'app-login',
@@ -17,6 +18,7 @@ export class LoginComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
+    private toastService: ToastService,
     private router: Router,
     private route: ActivatedRoute
   ) {
@@ -46,11 +48,14 @@ export class LoginComponent implements OnInit {
       this.authService.login(username, password).subscribe({
         next: () => {
           this.loading = false;
+          this.toastService.success('Login successful! Welcome back.');
           this.router.navigate([this.returnUrl]);
         },
         error: (err) => {
           this.loading = false;
-          this.error = err.error?.error || 'Invalid username or password';
+          const errorMessage = err.error?.error || 'Invalid username or password';
+          this.error = errorMessage;
+          this.toastService.error(errorMessage);
         }
       });
     }

@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { CartService } from '../../services/cart.service';
 import { OrderService } from '../../services/order.service';
 import { PaymentService } from '../../services/payment.service';
+import { ToastService } from '../../services/toast.service';
 import { CartItem } from '../../models/cart-item.model';
 
 @Component({
@@ -22,6 +23,7 @@ export class CheckoutComponent implements OnInit {
     private cartService: CartService,
     private orderService: OrderService,
     private paymentService: PaymentService,
+    private toastService: ToastService,
     private router: Router
   ) {}
 
@@ -36,7 +38,7 @@ export class CheckoutComponent implements OnInit {
 
   processPayment(): void {
     if (this.cartItems.length === 0) {
-      alert('Your cart is empty');
+      this.toastService.info('Your cart is empty');
       return;
     }
 
@@ -59,6 +61,8 @@ export class CheckoutComponent implements OnInit {
             this.cartService.clearCart();
             
             // Show success message
+            this.toastService.success(`Payment successful! Order #${orderId} has been placed.`);
+            
             setTimeout(() => {
               this.router.navigate(['/orders'], { 
                 queryParams: { orderId: orderId } 
@@ -67,14 +71,18 @@ export class CheckoutComponent implements OnInit {
           },
           error: (err) => {
             this.processing = false;
-            this.error = 'Payment processing failed. Please try again.';
+            const errorMessage = err?.error?.error || err?.error?.message || 'Payment processing failed. Please try again.';
+            this.error = errorMessage;
+            this.toastService.error(errorMessage);
             console.error(err);
           }
         });
       },
       error: (err) => {
         this.processing = false;
-        this.error = 'Order creation failed. Please try again.';
+        const errorMessage = err?.error?.error || err?.error?.message || 'Order creation failed. Please try again.';
+        this.error = errorMessage;
+        this.toastService.error(errorMessage);
         console.error(err);
       }
     });

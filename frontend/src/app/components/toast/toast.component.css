@@ -1,0 +1,127 @@
+.toast-container {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-width: 400px;
+  pointer-events: none;
+}
+
+.toast-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 20px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  animation: slideInRight 0.3s ease-out;
+  pointer-events: auto;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+  border-left: 4px solid;
+}
+
+.toast-item:hover {
+  transform: translateX(-4px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+}
+
+.toast-success {
+  border-left-color: #28a745;
+  color: #155724;
+  background: #d4edda;
+}
+
+.toast-success i {
+  color: #28a745;
+  font-size: 20px;
+}
+
+.toast-error {
+  border-left-color: #dc3545;
+  color: #721c24;
+  background: #f8d7da;
+}
+
+.toast-error i {
+  color: #dc3545;
+  font-size: 20px;
+}
+
+.toast-warning {
+  border-left-color: #ffc107;
+  color: #856404;
+  background: #fff3cd;
+}
+
+.toast-warning i {
+  color: #ffc107;
+  font-size: 20px;
+}
+
+.toast-info {
+  border-left-color: #17a2b8;
+  color: #0c5460;
+  background: #d1ecf1;
+}
+
+.toast-info i {
+  color: #17a2b8;
+  font-size: 20px;
+}
+
+.toast-message {
+  flex: 1;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.4;
+}
+
+.toast-close {
+  background: none;
+  border: none;
+  padding: 4px;
+  cursor: pointer;
+  color: inherit;
+  opacity: 0.7;
+  transition: opacity 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 4px;
+}
+
+.toast-close:hover {
+  opacity: 1;
+  background: rgba(0, 0, 0, 0.1);
+}
+
+.toast-close i {
+  font-size: 18px;
+}
+
+@keyframes slideInRight {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+/* Responsive */
+@media (max-width: 576px) {
+  .toast-container {
+    right: 10px;
+    left: 10px;
+    max-width: none;
+  }
+}

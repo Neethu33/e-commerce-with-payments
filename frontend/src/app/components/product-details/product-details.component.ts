@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ProductService } from '../../services/product.service';
 import { CartService } from '../../services/cart.service';
 import { AuthService } from '../../services/auth.service';
+import { ToastService } from '../../services/toast.service';
 import { Product } from '../../models/product.model';
 
 @Component({
@@ -20,7 +21,8 @@ export class ProductDetailsComponent implements OnInit {
     private router: Router,
     private productService: ProductService,
     private cartService: CartService,
-    private authService: AuthService
+    private authService: AuthService,
+    private toastService: ToastService
   ) {}
 
   ngOnInit(): void {
@@ -61,12 +63,12 @@ export class ProductDetailsComponent implements OnInit {
     ).subscribe({
       next: (response) => {
         console.log('Add to cart response:', response);
-        alert(`${this.product!.name} (x${this.quantity}) added to cart!`);
+        this.toastService.success(`${this.product!.name} (x${this.quantity}) added to cart!`);
       },
       error: (err) => {
         console.error('Add to cart error:', err);
-        const errorMessage = err?.error?.error || err?.message || 'Failed to add item to cart';
-        alert(`Error: ${errorMessage}`);
+        const errorMessage = err?.error?.error || err?.error?.message || err?.message || 'Failed to add item to cart';
+        this.toastService.error(errorMessage);
       }
     });
   }

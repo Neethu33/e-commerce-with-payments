@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { CartService } from '../../services/cart.service';
+import { ToastService } from '../../services/toast.service';
 import { CartItem } from '../../models/cart-item.model';
 
 @Component({
@@ -15,6 +16,7 @@ export class CartComponent implements OnInit {
 
   constructor(
     private cartService: CartService,
+    private toastService: ToastService,
     private router: Router
   ) {}
 
@@ -38,12 +40,16 @@ export class CartComponent implements OnInit {
   }
 
   removeItem(productId: number): void {
+    const item = this.cartItems.find(i => i.productId === productId);
     this.cartService.removeFromCart(productId).subscribe({
       next: () => {
         this.loadCart();
+        if (item) {
+          this.toastService.success(`${item.productName} removed from cart`);
+        }
       },
       error: (err) => {
-        alert('Failed to remove item');
+        this.toastService.error('Failed to remove item');
         console.error(err);
       }
     });
@@ -51,7 +57,7 @@ export class CartComponent implements OnInit {
 
   checkout(): void {
     if (this.cartItems.length === 0) {
-      alert('Your cart is empty');
+      this.toastService.info('Your cart is empty');
       return;
     }
     this.router.navigate(['/checkout']);

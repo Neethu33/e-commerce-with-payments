@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
@@ -13,6 +14,7 @@ import { OrderHistoryComponent } from './components/order-history/order-history.
 import { AdminDashboardComponent } from './components/admin-dashboard/admin-dashboard.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { FooterComponent } from './components/footer/footer.component';
+import { ToastComponent } from './components/toast/toast.component';
 
 import { AuthGuard } from './guards/auth.guard';
 import { RoleGuard } from './guards/role.guard';
@@ -29,10 +31,12 @@ import { AuthInterceptor } from './interceptors/auth.interceptor';
     OrderHistoryComponent,
     AdminDashboardComponent,
     NavbarComponent,
-    FooterComponent
+    FooterComponent,
+    ToastComponent
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     AppRoutingModule,
     HttpClientModule,
     FormsModule,
