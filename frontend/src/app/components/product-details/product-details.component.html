@@ -1,7 +1,10 @@
 <div class="container my-5" *ngIf="product">
   <div class="row">
     <div class="col-md-6">
-      <img [src]="product.imageUrl" class="img-fluid rounded" [alt]="product.name">
+      <img [src]="product.imageUrl" 
+           class="img-fluid rounded" 
+           [alt]="product.name"
+           (error)="onImageError($event, product.name)">
     </div>
     <div class="col-md-6">
       <h1>{{ product.name }}</h1>

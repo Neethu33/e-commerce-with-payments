@@ -27,7 +27,16 @@ public class CartController {
         
         String username = extractUsername(authHeader);
         if (username == null) {
-            return ResponseEntity.status(401).body(Map.of("error", "Unauthorized"));
+            return ResponseEntity.status(401).body(Map.of("error", "Unauthorized", "message", "Please login to add items to cart"));
+        }
+        
+        // Validate item
+        if (item == null || item.getProductId() == null || item.getProductName() == null || item.getPrice() == null) {
+            return ResponseEntity.badRequest().body(Map.of("error", "Invalid cart item", "message", "Missing required fields"));
+        }
+        
+        if (item.getQuantity() == null || item.getQuantity() <= 0) {
+            item.setQuantity(1);
         }
         
         userCarts.putIfAbsent(username, new ArrayList<>());
@@ -44,7 +53,12 @@ public class CartController {
             cart.add(item);
         }
         
-        return ResponseEntity.ok(Map.of("message", "Item added to cart", "cart", cart));
+        Map<String, Object> response = new HashMap<>();
+        response.put("message", "Item added to cart");
+        response.put("cart", cart);
+        response.put("success", true);
+        
+        return ResponseEntity.ok(response);
     }
     
     @GetMapping

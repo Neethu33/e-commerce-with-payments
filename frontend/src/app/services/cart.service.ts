@@ -22,14 +22,20 @@ export class CartService {
 
   addToCart(productId: number, productName: string, price: number, quantity: number = 1): Observable<any> {
     if (!this.authService.isAuthenticated()) {
-      throw new Error('Please login to add items to cart');
+      return new Observable(observer => {
+        observer.error(new Error('Please login to add items to cart'));
+      });
     }
 
     const item: CartItem = { productId, productName, price, quantity };
     return this.http.post(`${this.apiUrl}/cart/add`, item)
       .pipe(
         tap((response: any) => {
-          this.cartSubject.next(response.cart || []);
+          if (response && response.cart) {
+            this.cartSubject.next(response.cart);
+          } else if (Array.isArray(response)) {
+            this.cartSubject.next(response);
+          }
         })
       );
   }
